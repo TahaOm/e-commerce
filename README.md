@@ -1,6 +1,6 @@
 # Installation for backend
 
-[![Django CI](https://github.com/na0495/geo-craft/actions/workflows/django.yml/badge.svg)](https://github.com/na0495/geo-craft/actions/workflows/django.yml)
+[![Django CI](https://github.com/na0495/geo-craft/actions/workflows/django.yml/badge.svg)]
 
 To get started first acces the virtual env with :
 macOs/Linux : `source env/bin/activate`, or windows : `.\env\Scripts\activate`.
