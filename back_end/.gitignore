@@ -1,6 +1,6 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/django,nextjs
-# Edit at https://www.toptal.com/developers/gitignore?templates=django,nextjs
+# Created by https://www.toptal.com/developers/gitignore/api/django
+# Edit at https://www.toptal.com/developers/gitignore?templates=django
 
 ### Django ###
 *.log
@@ -150,8 +150,4 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-### NextJS ###
-# Next build dir
-.next/
-
-# End of https://www.toptal.com/developers/gitignore/api/django,nextjs
+# End of https://www.toptal.com/developers/gitignore/api/django
