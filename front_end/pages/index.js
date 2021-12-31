@@ -1,17 +1,21 @@
 import * as React from 'react';
-import { Link, Typography, Container, Box } from '@mui/material';
+import Footer from '../components/footer';
+import Header from '../components/header';
+import Layout from '../components/layouts';
+import useStyles from '../utils/styles';
 
-export default function Index() {
+export default function Home() {
+  const classes = useStyles();
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ my: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Next.js example
-        </Typography>
-        <Link href="/about" color="secondary">
-          Go to the about page
-        </Link>
-      </Box>
-    </Container>
-  );
+    <>
+      <Header />
+      <Layout>
+        <main className={classes.main}>
+          <h1>Welcome to My store page!!</h1>
+        </main>
+      </Layout>
+      <Footer />
+    </>
+
+  )
 }
