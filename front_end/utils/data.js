@@ -1,7 +1,8 @@
 const data = {
-    products: [
+    Products: [
         {
-            name: 'free shirt',
+            name: 'free shirt1',
+            slug: 'free-shirt1',
             category: 'Shirts',
             img: '/images/img1.jpg',
             price: 70,
@@ -187,5 +188,6 @@ const data = {
             countInStock: 20,
             description: 'a popular shirt',
         },
-    ]
-}
+    ],
+};
+export default data;

@@ -6,7 +6,7 @@ export default function Footer() {
     const classes = useStyles();
     return (
         <footer className={classes.footer}>
-            <div class="container py-5">
+            {/* <div class="container py-5">
                 <div class="row py-4">
                     <div class="col-lg-4 col-md-6 mb-4 mb-lg-0"><img src="img/logo.png" alt="" width="180" class="mb-3" />
                         <p class="font-italic text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt.</p>
@@ -55,7 +55,7 @@ export default function Footer() {
                 <div class="container text-center">
                     <p class="text-muted mb-0 py-2">© 2019 Bootstrapious All rights reserved.</p>
                 </div>
-            </div>
+            </div> */}
         </footer>
     )
 }

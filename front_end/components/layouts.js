@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import Header from './header';
+import Footer from './footer';
 import Head from 'next/head';
-import Container from '@mui/material/Container';
+import { Container } from '@mui/material';
 import useStyles from '../utils/styles';
 
-export default function Layout({ children }) {
+export default function Layout({ title, children }) {
+    const classes = useStyles();
+
     return (
-        <Container>
-            {children}
-        </Container>
+        <>
+            <Head>
+                <title>{title ? `${title}` : 'undefined'}</title>
+            </Head>
+            <Header />
+            <Container className={classes.main} >
+                {children}
+            </Container>
+            <Footer />
+        </>
     )
 }
