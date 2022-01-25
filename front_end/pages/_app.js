@@ -26,16 +26,16 @@ export default function MyApp(props) {
     };
   }, []);
 
+  const _setDarkMode = (newmode) => {
+    localStorage.setItem("mode", newmode);
+    setDarkMode(newmode);
+  };
+
   React.useEffect(() => {
     const mode = localStorage.getItem("mode") === "true";
     // set mode
     setDarkMode(mode);
   }, []);
-
-  const _setDarkMode = (newmode) => {
-    localStorage.setItem("mode", newmode);
-    setDarkMode(newmode);
-  };
 
   return (
 

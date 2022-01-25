@@ -1,21 +1,23 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import data from '../../utils/data';
+// import data from '../../../utils/data';
 import Image from 'next/image'
-import Layout from '../../components/layouts';
-import { Button, Card, Grid, List, ListItem, Paper, Typography } from '@mui/material';
+import Layout from '../../../components/layouts';
+import { Button, Card, Grid, List, ListItem, Typography } from '@mui/material';
 import NextLink from 'next/link';
 
-export default function Productdetails() {
+function Productdetails({ data }) {
     const router = useRouter();
-    const { slug } = router.query;
-    const product = data.Products.find(a => a.slug === slug);
 
-    if (!product) {
-        return <Layout><h1>product not found</h1></Layout>
+    if (router.isFallback) {
+        return <div>loading...</div>
     }
+    // if (!data) {
+    //     return <Layout><h1>product not found</h1></Layout>
+    // }
     return (
-        <Layout title={product.name}>
+        <Layout title={data.title}>
+            {/* {console.log(data)} */}
             <div elevation={0}>
                 <NextLink href={`/product/list`} passHref>
                     <Button>
@@ -25,21 +27,25 @@ export default function Productdetails() {
             </div>
             <Grid container spacing={1}>
                 <Grid item xs={12} sm={6} md={4}>
-                    <Image
-                        alt={product.name}
-                        src={product.img}
-                        width={200}
-                        height={300}
-                        layout='responsive' />
+                    {data.product_image.map((c) => (
+                        <div key={c.id}>
+                            <Image
+                                alt={data.product_image[0].alt_text}
+                                src={data.product_image[0].image}
+                                width={200}
+                                height={250}
+                                layout='responsive' />
+                        </div>
+                    ))}
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
                     <List>
                         <ListItem><h1>Details: </h1></ListItem>
-                        <ListItem><Typography>Name: {product.name}</Typography></ListItem>
-                        <ListItem><Typography>Category: {product.category}</Typography></ListItem>
-                        <ListItem><Typography>Brand: {product.brand}</Typography></ListItem>
-                        <ListItem><Typography>Rating: {product.rating} Starts ({product.numReview} reviews)</Typography></ListItem>
-                        <ListItem><Typography>Description: {product.description}</Typography></ListItem>
+                        <ListItem><Typography>Name: {data.description}</Typography></ListItem>
+                        <ListItem><Typography>Category: {data.category}</Typography></ListItem>
+                        {/* <ListItem><Typography>Brand: {data.brand}</Typography></ListItem> */}
+                        {/* <ListItem><Typography>Rating: {data.rating} Starts ({data.numReview} reviews)</Typography></ListItem> */}
+                        {/* <ListItem><Typography>Description: {data.description}</Typography></ListItem> */}
                     </List>
                 </Grid>
                 <Grid item xs={12} sm={6} md={4}>
@@ -51,7 +57,7 @@ export default function Productdetails() {
                                         <Typography>Price</Typography>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <Typography>${product.price}</Typography>
+                                        <Typography>${data.regular_price}</Typography>
                                     </Grid>
                                 </Grid>
                             </ListItem>
@@ -61,7 +67,7 @@ export default function Productdetails() {
                                         <Typography>Status</Typography>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <Typography>{product.countInStock > 0 ? 'In stock' : 'Unavailable'}</Typography>
+                                        {/* <Typography>{data.countInStock > 0 ? 'In stock' : 'Unavailable'}</Typography> */}
                                     </Grid>
                                 </Grid>
                             </ListItem>
@@ -75,3 +81,21 @@ export default function Productdetails() {
         </Layout>
     )
 }
+
+export async function getStaticPaths() {
+    return {
+        paths: [{ params: { slug: '' } }],
+        fallback: true,
+    }
+}
+
+export async function getStaticProps({ params }) {
+    const res = await fetch(`http://127.0.0.1:8000/api/${params.slug}`)
+    const data = await res.json()
+
+    return {
+        props: { data }
+    }
+}
+
+export default Productdetails
