@@ -1,23 +1,46 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-// import data from '../../../utils/data';
 import Image from 'next/image'
 import Layout from '../../../components/layouts';
-import { Button, Card, Grid, List, ListItem, Typography } from '@mui/material';
+import { Button, Card, CircularProgress, Grid, List, ListItem, Typography } from '@mui/material';
 import NextLink from 'next/link';
 
-function Productdetails({ data }) {
+export const getStaticPaths = async () => {
+    const res = await fetch("http://127.0.0.1:8000/api/list/")
+    const data = await res.json()
+
+    const paths = data.map(product => {
+        return {
+            params: { slug: product.slug.toString() }
+        }
+    })
+    return { paths, fallback: false }
+}
+
+export const getStaticProps = async (context) => {
+    const res = await fetch(`http://127.0.0.1:8000/api/${context.params.slug}`)
+    const data = await res.json()
+
+    if (!data.slug) {
+        return {
+            notFound: true,
+        }
+    }
+    else {
+        return {
+            props: { data }
+        }
+    }
+}
+
+const Productdetails = ({ data }) => {
     const router = useRouter();
 
     if (router.isFallback) {
-        return <div>loading...</div>
+        return <CircularProgress />
     }
-    // if (!data) {
-    //     return <Layout><h1>product not found</h1></Layout>
-    // }
     return (
         <Layout title={data.title}>
-            {/* {console.log(data)} */}
             <div elevation={0}>
                 <NextLink href={`/product/list`} passHref>
                     <Button>
@@ -79,23 +102,7 @@ function Productdetails({ data }) {
                 </Grid>
             </Grid>
         </Layout>
-    )
-}
-
-export async function getStaticPaths() {
-    return {
-        paths: [{ params: { slug: '' } }],
-        fallback: true,
-    }
-}
-
-export async function getStaticProps({ params }) {
-    const res = await fetch(`http://127.0.0.1:8000/api/${params.slug}`)
-    const data = await res.json()
-
-    return {
-        props: { data }
-    }
+    );
 }
 
 export default Productdetails

@@ -5,15 +5,18 @@ import PropTypes from 'prop-types';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useMediaQuery } from "@mui/material";
+import { Provider } from 'react-redux';
 
 import theme from '../utils/theme';
 import createEmotionCache from '../utils/createEmotionCache';
 import darkTheme from "../utils/darkTheme";
 import ColorModeContext from "../utils/ColorModeContext";
+import { useStore } from '../utils/Store';
 
 const clientSideEmotionCache = createEmotionCache();
 export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const store = useStore(pageProps.initialReduxState)
 
   // Set dark mode based on media query
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -39,17 +42,19 @@ export default function MyApp(props) {
 
   return (
 
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-      </Head>
-      <ColorModeContext.Provider value={{ darkMode, setDarkMode: _setDarkMode }}>
-        <ThemeProvider theme={darkMode ? darkTheme : theme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </ColorModeContext.Provider>
-    </CacheProvider>
+    <Provider store={store}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <meta name="viewport" content="initial-scale=1, width=device-width" />
+        </Head>
+        <ColorModeContext.Provider value={{ darkMode, setDarkMode: _setDarkMode }}>
+          <ThemeProvider theme={darkMode ? darkTheme : theme}>
+            <CssBaseline />
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </ColorModeContext.Provider>
+      </CacheProvider>
+    </Provider>
 
   );
 };

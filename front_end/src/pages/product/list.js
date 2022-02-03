@@ -2,10 +2,17 @@ import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid
 import React from 'react';
 import Layout from '../../components/layouts';
 import NextLink from 'next/link';
-// import data from '../../utils/data';
 
-function products({ data }) {
+export const getStaticProps = async () => {
+    const res = await fetch("http://127.0.0.1:8000/api/list/")
+    const data = await res.json()
 
+    return {
+        props: { data }
+    }
+}
+
+const products = ({ data }) => {
     return (
         <Layout title='Products'>
             <main>
@@ -14,9 +21,9 @@ function products({ data }) {
                 <h2>Products</h2>
                 <Grid container spacing={3}>
                     {data.map((product) => (
-                        <Grid item xs={6} sm={4} md={3} key={product.description}>
+                        <Grid item xs={6} sm={4} md={3}>
                             <Card>
-                                <NextLink key={data.id} href={`/product/details/${encodeURIComponent(product.slug)}`} passHref>
+                                <NextLink key={product.slug} href={`/product/details/${encodeURIComponent(product.slug)}`} passHref>
                                     <CardActionArea>
                                         <CardMedia component='img' title={product.description} image={product.product_image[0].image} />
                                         <CardContent>
@@ -36,16 +43,7 @@ function products({ data }) {
                 </Grid>
             </main>
         </Layout>
-    )
+    );
 }
 
-export async function getStaticProps() {
-    const res = await fetch("http://127.0.0.1:8000/api/list/")
-    const data = await res.json()
-
-    return {
-        props: { data }
-    }
-}
-
-export default products
+export default products;
